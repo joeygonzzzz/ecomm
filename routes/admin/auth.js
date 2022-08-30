@@ -35,18 +35,17 @@ router.post(
         .trim()
         .isLength({ min: 4, max: 20 })
         .withMessage('Must be between 4 and 20 characters')
+        .custom((passwordConfirmation, { req }) => {
+            if (passwordConfirmation !== req.body.password) {
+                throw new Error('Passwords must match');
+            }
+        })
     ], 
     async (req, res) => {
         const errors = validationResult(req);
         console.log(errors);
 
-        const { email, password, passwordConfirmation } = req.body;
-
-        
-
-        if (password !== passwordConfirmation) {
-         return res.send('Passwords must match');
-        }
+    const { email, password, passwordConfirmation } = req.body;
 
     const user = await usersRepo.create({ email, password });
 
