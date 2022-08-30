@@ -19,13 +19,16 @@ router.post(
       check('email')
         .trim()
         .normalizeEmail()
-        .isEmail(),
+        .isEmail()
+        .withMessage('Mus be a valid email'),
       check('password')
         .trim()
-        .isLength({ min: 4, max: 20}),
+        .isLength({ min: 4, max: 20})
+        .withMessage('Must be between 4 and 20 characters'),
       check('passwordConfirmation')
         .trim()
         .isLength({ min: 4, max: 20 })
+        .withMessage('Must be between 4 and 20 characters')
     ], 
     async (req, res) => {
         const errors = validationResult(req);
