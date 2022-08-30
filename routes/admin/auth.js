@@ -20,7 +20,13 @@ router.post(
         .trim()
         .normalizeEmail()
         .isEmail()
-        .withMessage('Mus be a valid email'),
+        .withMessage('Mus be a valid email')
+        .custom(async (email) => {
+            const existingUser = await usersRepo.getOneBy({ email });
+            if (existingUser) {
+                throw new Error('Email in use');
+        }
+        }),
       check('password')
         .trim()
         .isLength({ min: 4, max: 20})
@@ -36,10 +42,7 @@ router.post(
 
         const { email, password, passwordConfirmation } = req.body;
 
-        const existingUser = await usersRepo.getOneBy({ email });
-        if (existingUser) {
-           return res.send('Email in use');
-        }
+        
 
         if (password !== passwordConfirmation) {
          return res.send('Passwords must match');
