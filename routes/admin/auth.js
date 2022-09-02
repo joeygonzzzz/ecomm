@@ -47,7 +47,7 @@ router.post(
     async (req, res) => {
     const { email } = req.body;
 
-    const user = await usersRepo.getOneBy({ email});
+    const user = await usersRepo.getOneBy({ email });
 
     req.session.userId = user.id;
 
