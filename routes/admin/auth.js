@@ -11,7 +11,6 @@ const {
     requireEmailExists,
     requireValidPasswordForUser 
 } = require('./validators');
-const signin = require('../../views/admin/auth/signin');
 
 const router = express.Router();
 
@@ -29,7 +28,7 @@ router.post(
 
         req.session.userId = user.id;
 
-         res.send('Account created!');
+         res.redirect('/admin/products');
 });
 
 router.get('/signout', (req, res) => {
@@ -50,13 +49,9 @@ router.post(
 
     const user = await usersRepo.getOneBy({ email});
 
-    if (!user) {
-        return res.send('Email not found');
-    }
-
     req.session.userId = user.id;
 
-    res.send('You are signed in!!!');
+    res.redirect('/admin/products');
 });
 
 module.exports = router;
