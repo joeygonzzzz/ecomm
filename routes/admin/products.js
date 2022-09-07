@@ -44,11 +44,12 @@ router.get('/admin/products/:id/edit', async (req, res) => {
   res.send(productsEditTemplate({ product }))
 });
 
-router.post('/admin/products/:id/edit', 
+router.post(
+  '/admin/products/:id/edit', 
   requireAuth, 
   upload.single('image'),
   [requireTitle, requirePrice],
-  handleErrors(productsEditTemplate, async (req) => {
+  handleErrors(productsEditTemplate, async req => {
     const product = await productsRepo.getOne(req.params.id);
     return { product };
   }),
